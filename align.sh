@@ -1,6 +1,13 @@
 #!/bin/bash
 # script that actuall runs the alignment
 
+# run from pipeline.sh
+# $1 is the command to run
+# $2 is the species that you are aligning to
+# $3 is the number of cores you are using
+
+
+
 if [! -d tmpdir ]; then
 	mkdir tmpdir
 fi
@@ -52,12 +59,12 @@ function runpipeline {
 	for file in *.fastq
 	do
 		if [ "$2" == "d" ]; then
-			tophat -p $nump -o tophat_alignment \
+			tophat -p $3 -o tophat_alignment \
 				--transcriptome-index=latest_dog_genes \
 				latest_dog_genes $file
 		fi
 		if [ "$2" == "m" ]; then
-			tophat -p $nump -o tophat_alignment \
+			tophat -p $3 -o tophat_alignment \
 				--transcriptome-index=latest_mouse_genes \
 				latest_mouse_genes $file
 		fi
