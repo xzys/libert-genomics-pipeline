@@ -8,15 +8,15 @@
 
 
 
-if [! -d tmpdir ]; then
+if [! -d "tmpdir" ]; then
 	mkdir tmpdir
 fi
 
-if [! -d tophat_alignment ]; then
+if [! -d "tophat_alignment" ]; then
 	mkdir tophat_alignment
 fi
 
-if [! -d cuffquant_out ]; then
+if [! -d "cuffquant_out" ]; then
 	mkdir cuffquant_out
 fi
 
