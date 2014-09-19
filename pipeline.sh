@@ -51,7 +51,7 @@ if [ "$1" == "start" ]; then
 
 	tmux attach -t session
 	tmux select-pane -t 0
-	tmux send-keys -t home 'sleep 5;./align.sh start $species $nump' Enter
+	tmux send-keys -t home './align.sh start $species $nump' Enter
 
 fi
 

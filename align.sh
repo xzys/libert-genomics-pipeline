@@ -98,7 +98,7 @@ function runpipeline {
 
 # run pipeline
 if [ "$1" == "start" ]; then
-	runpipeline
+	echo $1
 fi
 
 
