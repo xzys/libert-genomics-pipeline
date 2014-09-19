@@ -26,12 +26,12 @@ if [ "$1" == "start" ]; then
 	if [ "$species" == "d" ]; then
 		# move all genome files into this dir because top hat needs them here
 		mv dog/latest_dog_genes* .
-	done
+	fi
 		
 	if [ "$species" == "m" ]; then
 		# move all genome files into this dir because top hat needs them here
 		mv mouse/latest_mouse_genes* .
-	done
+	fi
 
 
 
