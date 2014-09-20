@@ -31,9 +31,9 @@ function runpipeline {
 
 
 	echo "Start trimming..."
-	for file in tmpdir/*.fastq
+	for file in tmpdir/*
 	do
-		bn = b=$(basename $file)
+		bn=$(basename $wfile)
 		# put back into the main directory
 		cutadapt -m 20 -q 20 -a AGATCGGAAGAGCAC --match-read-wildcards -o trimmed_$bn $file cutadapt_output.out
 	done
