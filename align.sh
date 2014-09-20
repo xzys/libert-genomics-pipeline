@@ -110,7 +110,7 @@ function runpipeline {
 	fi
 
 	echo -e "Moving FastQC Output Here..."
-	mv fastqc* .
+	mv fastqc/* .
 
 }
 
