@@ -7,6 +7,9 @@
 # $3 is the number of cores you are using
 
 
+if [ ! -d "fastqc" ]; then
+	mkdir fastqc
+fi
 
 if [ ! -d "tmpdir" ]; then
 	mkdir tmpdir
@@ -24,18 +27,36 @@ fi
 
 function runpipeline {
 	echo "Starting Quality Control with fastqc..."
+
+	# postfix that fastqc adds to original file
+	pf="c.zip"
+
 	for file in *.fastq
 	do
-		fastqc --noextract -o tmpdir $file
+		if [ ! "$ls fastqc" ]; then
+			fastqc -q --noextract -o fastqc $file
+		else
+			echo "Skipping Quality Control..."
+		fi
 	done
 
 
 	echo "Start trimming..."
-	for file in tmpdir/*
+	for file in *.fastq
 	do
-		bn=$(basename $wfile)
 		# put back into the main directory
-		cutadapt -m 20 -q 20 -a AGATCGGAAGAGCAC --match-read-wildcards -o trimmed_$bn $file cutadapt_output.out
+		# bn=$(basename $file)
+		# cutadapt -m 20 -q 20 -a AGATCGGAAGAGCAC --match-read-wildcards -o trimmed_$bn $file cutadapt_output.out
+		
+
+		# if this hasn't already been done yet
+		if [ ! -f trimmed_$file ]; then
+			cutadapt -m 20 -q 20 -a AGATCGGAAGAGCAC --match-read-wildcards $file > trimmed_$file
+			# put away old file because you really don't need it anymore
+			mv $file tmpdir/
+		else
+			echo "Skipping trimming..."
+		fi
 	done
 
 
@@ -43,7 +64,7 @@ function runpipeline {
 	echo "Running FastQC again just to be sure."
 	for file in trimmed_*.fastq
 	do
-		fastqc -q --noextract -o $file
+		fastqc -q --noextract -o fastqc $file
 	done
 
 
@@ -56,7 +77,7 @@ function runpipeline {
 		echo "With mouse genome."
 	fi
 
-	for file in *.fastq
+	for file in trimmed_*.fastq
 	do
 		if [ "$2" == "d" ]; then
 			tophat -p $3 -o tophat_alignment \
