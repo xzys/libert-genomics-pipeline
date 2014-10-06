@@ -121,7 +121,38 @@ function runpipeline {
 
 # run pipeline
 if [ "$1" == "start" ]; then
-	runpipeline
+	
+	# check if there aare files leftover
+	# if there are ask to delete them
+	DIR='fastqc'
+	if [ "$(ls -A $DIR)" ]; then
+		
+		echo -e "There are files leftover from last run."
+		ls fastqc
+		ls cuffquant_out
+		ls tmpdir
+		ls tophat_alignment
+		echo -e"\n\n"
+		echo -e "Do you want to delete all of them? This will delete all progress. y / n"
+		read goon
+
+		if [ "$goon" == "y" ]; then
+			rm fastqc/*
+			rm tmpdir/*
+			rm trimmed_*
+			rm tophat_alignment/*
+			rm cuffquant_out/*
+			runpipeline
+		fi
+
+		if [ "$goon" == "n" ]; then
+			echo -e "Nevermind then."
+		fi
+
+	else
+		echo -e "Running pipeline."
+		runpipeline
+	fi
 fi
 
 
@@ -130,23 +161,13 @@ if [ "$1" == "retry" ]; then
 	echo -e $1
 fi
 
-
-
+if [ "$1" == "" ]; then
+	cat README.md
+fi
 # everything above but delete everything first
 # restart entire pipeline completely
-if [ "$1" == "restart" ]; then
-	echo -e "Are you sure you want to restart? This will delete all progress. y / n"
-	read goon
-
-	if [ "$goon" == "y" ]; then
-		rm fastqc/*
-		rm tmpdir/*
-		rm trimmed_*
-		rm tophat_alignment/*
-		rm cuffquant_out/*
-		runpipeline
-	fi
-fi
+# if [ "$1" == "restart" ]; then	
+# fi
 
 
 

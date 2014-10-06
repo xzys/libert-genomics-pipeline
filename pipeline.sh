@@ -62,6 +62,9 @@ fi
 
 
 
+if [ "$1" == "" ]; then
+	cat README.md
+fi
 
 
 
